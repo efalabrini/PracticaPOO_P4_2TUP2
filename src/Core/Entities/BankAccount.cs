@@ -33,6 +33,7 @@ namespace Core.Entities
             Owner = name;
             MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
         }
+
         public void MakeDeposit(decimal amount, DateTime date, string note)
         {
             if (amount <= 0)
@@ -52,7 +53,10 @@ namespace Core.Entities
 
             var withdrawal = new Transaction(-amount, date, note);
             _allTransactions.Add(withdrawal);
+
         }
+
     }
+
 
 }
