@@ -1,4 +1,4 @@
-// Nombrar correctamente por directorios
+// Nombrar correctamente por directorio
 namespace PracticaPOO_P4_2TUP2.Core.Entities;
 
 public class BankAccount
