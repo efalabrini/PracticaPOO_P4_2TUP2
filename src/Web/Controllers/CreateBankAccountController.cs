@@ -8,9 +8,9 @@ namespace Web.Controllers;
 public class CreateBankAccount : ControllerBase
 {
     [HttpPost]
-    public string createAccount([FromQuery] string name)
+    public ActionResult<string> createAccount([FromQuery] string name)
     {
         BankAccount cuenta = new(name, 0);
-        return $"Cuenta de {name} creada. \n Balance: {cuenta.Balance} AR$";
+        return $"Cuenta de {name} creada. \n Número de cuenta: {cuenta.Number} \n Balance: {cuenta.Balance} AR$";
     }
 }
