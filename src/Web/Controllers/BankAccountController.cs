@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PracticaPOO_P4_2TUP2.Core.Entities;
-
+// add comments
 
 namespace PracticaPOO_P4_2TUP2.Web.Controllers
 {
