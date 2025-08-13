@@ -4,13 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class CreateBankAccount : ControllerBase
+[Route("api/[controller]")]
+public class BankAccountController : ControllerBase
 {
     [HttpPost]
-    public ActionResult<string> createAccount([FromQuery] string name)
+    public ActionResult<object> CreateAccount([FromQuery] string name)
     {
-        BankAccount cuenta = new(name, 0);
-        return $"Cuenta de {name} creada. \n Número de cuenta: {cuenta.Number} \n Balance: {cuenta.Balance} AR$";
+        var cuenta = new BankAccount("0001", name, 0m);
+
+        return Ok(new
+        {
+            Name = cuenta.Owner,
+            Number = cuenta.Number,
+            Balance = cuenta.Balance
+        });
     }
 }
