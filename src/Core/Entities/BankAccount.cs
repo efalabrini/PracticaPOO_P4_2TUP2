@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    internal class BankAccount
+    public class BankAccount
     {
         public string Number { get; }
         public string Owner { get; set; }
