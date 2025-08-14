@@ -7,7 +7,7 @@ namespace WEB.Controllers
     [Route("[controller]")]
     public class BankAccountController : ControllerBase
     {
-        private static List<BankAccount> accounts = new List<BankAccount>();
+        private static readonly List<BankAccount> accounts = [];
 
         [HttpPost]
         public IActionResult Create([FromBody] BankAccount account)
@@ -19,7 +19,9 @@ namespace WEB.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(accounts);
+            var info = accounts.Select(a => a.GetAccountInfo()).ToList();
+            return Ok(info);
         }
+
     }
 }
