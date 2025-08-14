@@ -5,12 +5,12 @@ namespace Web.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CreateBankAccount : ControllerBase
+public class CreateBankAccountController : ControllerBase
 {
     [HttpPost]
-    public string createAccount([FromQuery] string name)
+    public IActionResult CreateAccount([FromQuery] string name)
     {
         BankAccount cuenta = new(name, 0);
-        return $"Cuenta de {name} creada. \n Balance: {cuenta.Balance} AR$";
+        return Ok(cuenta);
     }
 }
