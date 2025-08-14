@@ -2,7 +2,8 @@ namespace Core.Entities
 {
     public class BankAccount
     {
-        public string Number { get; } = string.Empty;
+        private static int s_accountNumberSeed = 1234567890;
+        public string Number { get; }
         public string Owner { get; set; }
         public decimal Balance { get; }
 
@@ -21,6 +22,8 @@ namespace Core.Entities
         {
             this.Owner = name;
             this.Balance = initialBalance;
+            this.Number = s_accountNumberSeed.ToString();
+            s_accountNumberSeed++;
         }
     }
 }
