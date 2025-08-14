@@ -1,4 +1,5 @@
-// Nombrar correctamente por directorio
+using Classes;
+
 namespace PracticaPOO_P4_2TUP2.Core.Entities;
 
 public class BankAccount
@@ -7,10 +8,18 @@ public class BankAccount
     public string Owner { get; set; }
     public decimal Balance { get; private set; }
 
-    public BankAccount(string number, decimal initialBalance = 0)
+    private static int s_accountNumberSeed = 1234567890;
+
+
+    private List<Transaction> _allTransactions = [];
+
+
+    public BankAccount(string owner, decimal initialBalance = 0)
     {
-        Number = number;
+        Owner = owner;
         Balance = initialBalance;
+        Number = s_accountNumberSeed.ToString();
+        s_accountNumberSeed++;
     }
 
 }
