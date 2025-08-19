@@ -11,17 +11,28 @@ public class BankAccountController : ControllerBase
     private static readonly List<BankAccount> accounts = new List<BankAccount>();
 
     [HttpPost]
-    public IActionResult POSTnewAccount([FromQuery] string name, [FromQuery] decimal balance)
+    public IActionResult POSTnewAccount([FromQuery] string name, [FromQuery] decimal balance, [FromQuery] string accountType, [FromQuery] decimal creditLimit, [FromQuery] decimal monthlyDeposit)
     {
         try
         {
-            var newAccount = new BankAccount(name, balance);
+            var newAccount = accountType switch
+            {
+                "normal" => new BankAccount(name, balance, "Normal account"),
+
+                "interest-earning" => new InterestEarningAccount(name, balance, "Interest Earning Account"),
+
+                "line-credit" => new LineOfCreditAccount(name, balance, "Line Of Credit Account", creditLimit),
+
+                "gift-card" => new GiftCardAccount(name, balance, "Gift Card Account", monthlyDeposit),
+
+                _ => throw new Exception("account type not available")
+            };
             if (newAccount == null)
             {
                 return BadRequest("Error al crear la cuenta");
             }
             accounts.Add(newAccount);
-            return Ok($"Nueva cuenta creada:\nNumer: {newAccount.Number}\nDueño: {newAccount.Owner}\nBalance inicial: {newAccount.Balance}");
+            return Ok($"Nueva cuenta creada:\nNumer: {newAccount.Number}\nDueño: {newAccount.Owner}\nBalance inicial: {newAccount.Balance}\nTipo: {newAccount.Type}");
         }
         catch (Exception)
         {
@@ -105,6 +116,26 @@ public class BankAccountController : ControllerBase
             return BadRequest(e);
         }
     }
+
+    [HttpGet("accountHistory/{aNumber}")]
+    public IActionResult GETAccountHistory([FromRoute] string aNumber)
+    {
+        try
+        {
+            var account = accounts.FirstOrDefault(a => a.Number == aNumber);
+            if (account == null)
+            {
+                return NotFound($"Account with {aNumber} ID not found");
+            }
+            return Ok(account.GetAccountHistory());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
+    }
+
+
 
 }
 
