@@ -1,0 +1,56 @@
+//using Microsoft.AspNetCore.Mvc;
+//using PracticaPOO_P4_2TUP2.Core.Entities;
+
+namespace PracticaPOO_P4_2TUP2.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BankAccountController : ControllerBase
+    {
+        // Lista en memoria para guardar las cuentas creadas
+        private static List<BankAccount> accounts = new List<BankAccount>();
+
+        // GET para buscar una cuenta por ID
+        [HttpGet("{id}")]
+        public ActionResult<BankAccount> GetAccountById(int id)
+        {
+            var account = accounts.FirstOrDefault(a => a.Id == id);
+            if (account == null)
+            {
+                return NotFound("Cuenta no encontrada");
+            }
+            return Ok(account);
+        }
+
+        // POST para crear una nueva cuenta
+        [HttpPost("create")]
+        public ActionResult<BankAccount> CreateAccount(string owner, decimal initialBalance)
+        {
+            try
+            {
+                var account = new BankAccount(owner, initialBalance);
+                accounts.Add(account);
+
+                // Devuelve HTTP 201 Created + URL de la nueva cuenta
+                return CreatedAtAction(
+                    nameof(GetAccountById),     // Acción que se usará para obtener la cuenta
+                    new { id = account.Id },    // Parámetros de ruta para construir la URL
+                    account                     // Objeto que se devolverá como JSON
+                );
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+    }
+}
+/*Comparación con tu código anterior
+
+Antes: return Ok(account); → 200 OK sin referencia a dónde está el nuevo recurso.
+
+Ahora:
+
+CreatedAtAction(...) → 201 Created + cabecera Location con la URL para consultar la cuenta recién creada.
+
+Añadí GetAccountById para que CreatedAtAction tenga un endpoint al que referirse.*/
