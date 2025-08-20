@@ -1,4 +1,4 @@
-namespace Classes;
+namespace PracticaPOO_P4_2TUP2.Core.Entities;
 
 public class Transaction
 {
