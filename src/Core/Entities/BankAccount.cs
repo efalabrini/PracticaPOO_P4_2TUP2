@@ -5,6 +5,11 @@ namespace Core.Entities
         // Lista de transacciones
         private List<Transaction> _allTransactions = new();
 
+        public IReadOnlyList<Transaction> AllTransactions
+        {
+            get { return _allTransactions.AsReadOnly(); } // permite lectura 
+        }
+
         // Campo estático: se comparte entre TODAS las cuentas
         private static int s_accountNumberSeed = 1234567890;
         public string Number { get; }

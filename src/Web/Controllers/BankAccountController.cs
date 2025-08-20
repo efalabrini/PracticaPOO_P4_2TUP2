@@ -48,7 +48,7 @@ public class BankAccountController : ControllerBase
         {
             Message = $"Depósito de {amount} AR$ realizado con éxito.",
             accountNumber = cuenta.Number,
-            Transaction = cuenta
+            Balance = cuenta.Balance
         });
     }
 
@@ -81,6 +81,25 @@ public class BankAccountController : ControllerBase
             accountNumber = cuenta.Number,
             Owner = cuenta.Owner,
             Balance = cuenta.Balance
+        });
+    }
+
+    [HttpGet("transactions")]
+    public IActionResult GetTransactions([FromQuery] string accountNumber)
+    {
+        if (!_accounts.ContainsKey(accountNumber))
+        {
+            return NotFound("Cuenta no encontrada");
+        }
+
+        var cuenta = _accounts[accountNumber];
+
+        return Ok(new
+        {
+            accountNumber = cuenta.Number,
+            Owner = cuenta.Owner,
+            Balance = cuenta.Balance,
+            Transactions = cuenta.AllTransactions
         });
     }
 }
