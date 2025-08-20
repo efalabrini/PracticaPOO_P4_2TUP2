@@ -8,6 +8,8 @@ public class BankAccount
 
     public readonly string Type;
     private readonly decimal _minimumBalance;
+
+    public record WithdrawalResult(Transaction Withdrawal, Transaction? OverLimitFee);
     public decimal Balance
     {
         get
@@ -51,19 +53,33 @@ public class BankAccount
         return deposit;
     }
 
-    public Transaction MakeWithdrawal(decimal amount, DateTime date, string note)
+    public WithdrawalResult MakeWithdrawal(decimal amount, DateTime date, string note)
     {
         if (amount <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(amount), "Amount of withdrawal must be positive");
         }
-        if (Balance - amount < _minimumBalance)
+        Transaction? overdraftTransaction = CheckWithdrawalLimit(Balance - amount < _minimumBalance);
+        Transaction? withdrawal = new(-amount, date, note);
+        _allTransactions.Add(withdrawal);
+        if (overdraftTransaction != null)
+        {
+            _allTransactions.Add(overdraftTransaction);
+            return new(withdrawal, overdraftTransaction);
+        }
+        return new(withdrawal, null);
+    }
+
+    public virtual Transaction? CheckWithdrawalLimit(bool isOverdrawn)
+    {
+        if (isOverdrawn)
         {
             throw new InvalidOperationException("Not sufficient funds for this withdrawal");
         }
-        var withdrawal = new Transaction(-amount, date, note);
-        _allTransactions.Add(withdrawal);
-        return withdrawal;
+        else
+        {
+            return default;
+        }
     }
 
     public string GetAccountHistory()
@@ -80,6 +96,8 @@ public class BankAccount
 
         return report.ToString();
     }
+    
+    
     public virtual void PerformMonthEndTransactions() { }
 
 }

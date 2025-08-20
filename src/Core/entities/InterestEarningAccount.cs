@@ -11,7 +11,7 @@ public class InterestEarningAccount : BankAccount
         if (Balance > 500m)
         {
             decimal intereses = Balance * 0.02m;
-            MakeDeposit(intereses, DateTime.Now, "apply montthly interest");
+            MakeDeposit(intereses, DateTime.Now, "apply monthly interest");
         }
     }
 }

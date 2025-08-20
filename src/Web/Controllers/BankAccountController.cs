@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
+using System.Data;
 
 namespace Web.Controllers;
 
@@ -135,6 +136,24 @@ public class BankAccountController : ControllerBase
         }
     }
 
+    [HttpPost("simulate-month-end/{aNumber}")]
+    public IActionResult POSTsimulateMonthEnd([FromRoute] string aNumber)
+    {
+        try
+        {
+            var account = accounts.FirstOrDefault(a => a.Number == aNumber);
+            if (account == null)
+            {
+                return NotFound($"account with {aNumber} ID not found ");
+            }
+            account.PerformMonthEndTransactions();
+            return Ok("a month has passed");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
+    }
 
 
 }

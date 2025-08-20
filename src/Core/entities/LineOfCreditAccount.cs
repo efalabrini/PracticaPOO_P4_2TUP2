@@ -1,10 +1,8 @@
-using System.Reflection.Metadata;
-
 namespace Core.Entities;
 
 public class LineOfCreditAccount : BankAccount
 {
-    public LineOfCreditAccount(string name, decimal initialBalance, string type ,decimal creditLimit) : base(name, initialBalance, type ,-creditLimit)
+    public LineOfCreditAccount(string name, decimal initialBalance, string type, decimal creditLimit) : base(name, initialBalance, type, -creditLimit)
     {
 
     }
@@ -16,4 +14,10 @@ public class LineOfCreditAccount : BankAccount
             MakeWithdrawal(interest, DateTime.Now, "Charge monthly interest");
         }
     }
+
+
+    public override Transaction? CheckWithdrawalLimit(bool isOverdrawn) =>
+    isOverdrawn
+    ? new Transaction(-20, DateTime.Now, "Apply overdraft fee")
+    : default;
 }
