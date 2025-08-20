@@ -11,11 +11,11 @@ public class BankAccountController : ControllerBase
   public static readonly List<BankAccount> accounts = [];
 
   [HttpPost]
-  public IActionResult CreateBankAccount([FromQuery] string owner, [FromQuery] decimal initialBalance)
+  public IActionResult CreateBankAccount([FromBody] CreateBankAccountReq req)
   {
     try
     {
-      BankAccount account = new(owner, initialBalance);
+      BankAccount account = new(req.Owner, req.InitialBalance);
       accounts.Add(account);
       return Ok(account);
     }
@@ -26,7 +26,7 @@ public class BankAccountController : ControllerBase
 
   }
 
-  [HttpGet("getOneAccount/{id}")]
+  [HttpGet("User/{id}")]
   public IActionResult GetOneAccount([FromRoute] string id)
   {
     try
@@ -46,7 +46,7 @@ public class BankAccountController : ControllerBase
   }
 
 
-  [HttpGet]
+  [HttpGet("Users")]
   public IActionResult GetAllAccounts()
   {
     try
@@ -71,7 +71,6 @@ public class BankAccountController : ControllerBase
     var history = account.GetAccountHistory();
     return Ok(history);
   }
-
 }
 
 
