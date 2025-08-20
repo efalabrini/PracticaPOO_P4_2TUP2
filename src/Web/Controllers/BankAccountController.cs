@@ -84,8 +84,8 @@ public class BankAccountController : ControllerBase
         });
     }
 
-    [HttpGet("transactions")]
-    public IActionResult GetTransactions([FromQuery] string accountNumber)
+    [HttpGet("{accountNumber}/transactions")]
+    public IActionResult GetTransactions([FromRoute] string accountNumber)
     {
         if (!_accounts.ContainsKey(accountNumber))
         {
