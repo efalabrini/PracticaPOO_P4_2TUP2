@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
-
+using System.Linq; // para poder usar firstOrDefault
 
 namespace PracticaPOO_P4_2TUP2.Controllers
 
@@ -87,14 +87,33 @@ namespace PracticaPOO_P4_2TUP2.Controllers
             }
         }
          [HttpGet("history/{accountNumber}")]
-        public ActionResult<string> GetHistory([FromBody] string accountNumber)
+         public ActionResult<string> GetHistory([FromRoute] string accountNumber)
+        //public ActionResult<IEnumerable<Transaction>> GetHistory([FromRoute] string accountNumber) //para devolverlo en json no string
         {
             var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
             if (account == null)
-                return NotFound($"No se encontró la cuenta con número {number}.");
+                return NotFound($"No se encontró la cuenta con número {accountNumber}.");
 
             return Ok(account.GetAccountHistory());
         }
+
+          [HttpGet("balance")]
+    public ActionResult<string> GetBalance([FromQuery] string accountNumber)
+    {
+        try
+        {
+            var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
+
+            if (account == null)
+                return NotFound("Cuenta no encontrada.");
+
+            return Ok($"El balance de la cuenta {account.Number} es ${account.Balance}.");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+        }
+    }
     }
     
 }
