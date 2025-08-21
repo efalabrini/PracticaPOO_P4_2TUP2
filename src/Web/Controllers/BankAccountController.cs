@@ -86,5 +86,15 @@ namespace PracticaPOO_P4_2TUP2.Controllers
                 return BadRequest(ex.Message);
             }
         }
+         [HttpGet("history/{accountNumber}")]
+        public ActionResult<string> GetHistory([FromBody] string accountNumber)
+        {
+            var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
+            if (account == null)
+                return NotFound($"No se encontró la cuenta con número {number}.");
+
+            return Ok(account.GetAccountHistory());
+        }
     }
+    
 }
