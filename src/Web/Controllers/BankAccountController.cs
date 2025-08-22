@@ -1,17 +1,21 @@
-
 using Classes;
 using Microsoft.AspNetCore.Mvc;
 
-
 [ApiController]
-[Route("api/[controller]")]
-public class AccountController : ControllerBase
+[Route("[controller]")]
+public class BankAccountController : ControllerBase
 {
-    [HttpPost("create")]
-    public IActionResult CreateAccount([FromQuery] string name, [FromQuery] decimal balance = 1000)
-    {
-        var account = new BankAccount(name, balance);
+  [HttpPost]
+  public IActionResult CreateBankAccount([FromQuery] string name)
+  {
+    BankAccount account = new(name, 0);
+    BankAccount.AddAccount(account);
+    return Ok(account);
+  }
 
-        return Ok($"La cuenta se creo con el nombre: {account.Number} y la cantidad de dinero es: {account.Balance} ");
-    }
+  [HttpGet]
+  public IActionResult GetAllAccounts()
+  {
+    return Ok(BankAccount.GetAllAccounts());
+  }
 }
