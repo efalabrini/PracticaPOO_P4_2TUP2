@@ -59,7 +59,6 @@ public class BankAccountController : ControllerBase
 
   }
 
-  // Token: Users
   [HttpGet("Users")]
   public IActionResult GetAllAccounts()
   {
