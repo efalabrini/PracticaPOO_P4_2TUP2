@@ -22,7 +22,7 @@ public class BankAccount
 
   private List<Transaction> _allTransactions = [];
 
-                  // CONSTRUCTOR
+  // CONSTRUCTOR
   public BankAccount(string name, decimal initialBalance)
   {
     try
@@ -56,7 +56,7 @@ public class BankAccount
     }
   }
 
-    // METODOS
+  // METODOS
 
   public void MakeDeposit(decimal amount, DateTime date, string note)
   {
@@ -87,7 +87,7 @@ public class BankAccount
       throw new Exception($"[500 - Internal Server Error] Error making deposit: {ex.Message}");
     }
   }
-  
+
   public void MakeWithdrawal(decimal amount, DateTime date, string note)
   {
     try
@@ -134,10 +134,16 @@ public class BankAccount
     report.AppendLine("Date\t\tAmount\tBalance\tNote");
     foreach (var item in _allTransactions)
     {
-        balance += item.Amount;
-        report.AppendLine($"{item.Date.ToShortDateString()}\t{item.Amount}\t{balance}\t{item.Notes}");
+      balance += item.Amount;
+      report.AppendLine($"{item.Date.ToShortDateString()}\t{item.Amount}\t{balance}\t{item.Notes}");
     }
 
     return report.ToString();
   }
+
+
+  public virtual void PerformMonthEndTransactions() { }
+
 }
+
+
