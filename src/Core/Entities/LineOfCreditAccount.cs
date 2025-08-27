@@ -7,7 +7,7 @@ namespace Core.Entities
         private readonly decimal _creditLimit;
 
         public LineOfCreditAccount(string name, decimal initialBalance, decimal creditLimit)
-            : base(name, initialBalance) // 👈 ahora coincide con el constructor de BankAccount
+            : base(name, initialBalance) //  coincide con el constructor de BankAccount
         {
             _creditLimit = creditLimit;
         }
