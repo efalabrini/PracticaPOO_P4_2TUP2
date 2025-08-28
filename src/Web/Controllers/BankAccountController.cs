@@ -159,6 +159,7 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
+                Type = account.Type,
                 Balance = account.Balance
             };
 
@@ -183,6 +184,7 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
+                Type = account.Type,
                 Balance = account.Balance
             });
 
