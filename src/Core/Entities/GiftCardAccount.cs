@@ -2,6 +2,7 @@ namespace Core.Entities
 {
     public class GiftCardAccount : BankAccount
     {
+        public override string  Type => "GiftCardAccount";
         private readonly decimal _monthlyDeposit = 0m;
 
         public GiftCardAccount(string name, decimal initialBalance, decimal monthlyDeposit = 0) 

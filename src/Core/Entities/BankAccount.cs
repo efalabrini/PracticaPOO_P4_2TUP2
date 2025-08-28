@@ -1,9 +1,10 @@
 namespace Core.Entities;
 
-public class BankAccount
+public abstract class BankAccount
 {
     // Campo estático: se comparte entre todas las instancias de BankAccount
     private static int s_accountNumberSeed = 1234567890;
+
     private List<Transaction> _allTransactions = new List<Transaction>();
 
     private readonly decimal _minimumBalance;
@@ -24,6 +25,8 @@ public class BankAccount
             return balance;
         }
     }
+
+    public abstract string  Type { get; }
 
     public BankAccount(string name, decimal initialBalance) : this(name, initialBalance, 0) { }
 
