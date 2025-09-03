@@ -1,6 +1,6 @@
 namespace Core.Entities;
 
-public class BankAccount
+public abstract class BankAccount
 {
     // Campo estático: se comparte entre todas las instancias de BankAccount
     private static int s_accountNumberSeed = 1234567890;
@@ -24,6 +24,8 @@ public class BankAccount
             return balance;
         }
     }
+
+    public abstract string  Type { get; }
 
     public BankAccount(string name, decimal initialBalance) : this(name, initialBalance, 0) { }
 
@@ -81,11 +83,11 @@ public class BankAccount
         var report = new System.Text.StringBuilder();
 
         decimal balance = 0;
-        report.AppendLine("Date\t\tAmount\tBalance\tNote");
+        report.AppendLine("Date\t\tAmount\t\tBalance\t\tNote\t\t\tAccountType");
         foreach (var item in _allTransactions)
         {
             balance += item.Amount;
-            report.AppendLine($"{item.Date.ToShortDateString()}\t{item.Amount}\t{balance}\t{item.Notes}");
+            report.AppendLine($"{item.Date.ToShortDateString()}\t{item.Amount}\t\t{balance}\t\t{item.Notes.PadRight(20)}\t{this.Type.PadRight(20)}");
         }
 
         return report.ToString();

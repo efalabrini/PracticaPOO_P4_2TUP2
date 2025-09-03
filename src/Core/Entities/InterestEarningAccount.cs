@@ -2,6 +2,7 @@ namespace Core.Entities
 {
     public class InterestEarningAccount : BankAccount
     {
+        public override string  Type => "InterestAccount";
         public InterestEarningAccount(string name, decimal initialBalance)
             : base(name, initialBalance)
         {
