@@ -177,7 +177,7 @@ public class BankAccountController : ControllerBase
         try
         {
             if (!accounts.Any())
-                return NotFound("Cuenta no encontrada.");
+                return Ok(Enumerable.Empty<object>()); 
 
             var allInfo = accounts.Select(account => new
             {
