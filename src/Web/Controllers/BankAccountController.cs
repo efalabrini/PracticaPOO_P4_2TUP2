@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
@@ -10,7 +10,13 @@ public class BankAccountController : ControllerBase
     private static List<BankAccount> accounts = new List<BankAccount>();
 
     [HttpPost("create")]
-    public ActionResult<string> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)  
+    public ActionResult<string> CreateBankAccount(
+        [FromQuery] string name,
+        [FromQuery] decimal initialBalance,
+        [FromQuery] AccountType accountType,
+        [FromQuery] decimal? creditLimit = null,
+        [FromQuery] decimal? monthlyDeposit = null
+    )
     {
         try
         {
@@ -24,24 +30,40 @@ public class BankAccountController : ControllerBase
                 case AccountType.Credit:
                     if (creditLimit == null)
                         return BadRequest("Credit limit is required for a Line of Credit account.");
-                    newAccount = new LineOfCreditAccount(name, initialBalance, creditLimit.Value);
+                    newAccount = new LineOfCreditAccount(
+                        name,
+                        initialBalance,
+                        accountType,
+                        creditLimit.Value
+                    );
                     break;
 
                 case AccountType.Gift:
-                    newAccount = new GiftCardAccount(name, initialBalance, monthlyDeposit ?? 0);
+                    newAccount = new GiftCardAccount(
+                        name,
+                        initialBalance,
+                        accountType,
+                        monthlyDeposit ?? 0
+                    );
                     break;
 
                 case AccountType.Interest:
-                    newAccount = new InterestEarningAccount(name, initialBalance);
+                    newAccount = new InterestEarningAccount(name, initialBalance, accountType);
                     break;
 
+                case AccountType.Normal:
+                    newAccount = new BankAccount(name, initialBalance, accountType);
+                    break;
+                    
                 default:
                     return BadRequest("Invalid account type.");
             }
 
             accounts.Add(newAccount);
 
-            return Ok($"Account {newAccount.Number} ({accountType}) was created for {newAccount.Owner} with {newAccount.Balance} initial balance.");
+            return Ok(
+                $"Account {newAccount.Number} ({accountType}) was created for {newAccount.Owner} with {newAccount.Balance} initial balance."
+            );
         }
         catch (Exception ex)
         {
@@ -67,9 +89,12 @@ public class BankAccountController : ControllerBase
         }
     }
 
-
     [HttpPost("deposit")]
-    public ActionResult<string> MakeDeposit([FromQuery] decimal amount, [FromQuery] string note, [FromQuery] string accountNumber)
+    public ActionResult<string> MakeDeposit(
+        [FromQuery] decimal amount,
+        [FromQuery] string note,
+        [FromQuery] string accountNumber
+    )
     {
         try
         {
@@ -89,7 +114,11 @@ public class BankAccountController : ControllerBase
     }
 
     [HttpPost("withdrawal")]
-    public ActionResult<string> MakeWithdrawal([FromQuery] decimal amount, [FromQuery] string note, [FromQuery] string accountNumber)
+    public ActionResult<string> MakeWithdrawal(
+        [FromQuery] decimal amount,
+        [FromQuery] string note,
+        [FromQuery] string accountNumber
+    )
     {
         try
         {
@@ -159,14 +188,13 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
-                Balance = account.Balance
+                Balance = account.Balance,
             };
 
             return Ok(accountInfo);
         }
         catch (Exception ex)
         {
-
             return StatusCode(500, $"Error interno del servidor: {ex.Message}");
         }
     }
@@ -183,14 +211,13 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
-                Balance = account.Balance
+                Balance = account.Balance,
             });
 
             return Ok(allInfo);
         }
         catch (Exception ex)
         {
-
             return StatusCode(500, $"Error interno del servidor: {ex.Message}");
         }
     }
