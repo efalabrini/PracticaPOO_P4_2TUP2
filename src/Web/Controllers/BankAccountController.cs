@@ -10,7 +10,7 @@ public class BankAccountController : ControllerBase
     private static List<BankAccount> accounts = new List<BankAccount>();
 
     [HttpPost("create")]
-    public ActionResult<string> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)  
+    public ActionResult<string> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)
     {
         try
         {
@@ -125,7 +125,6 @@ public class BankAccountController : ControllerBase
             return StatusCode(500, $"Error interno del servidor: {ex.Message}");
         }
     }
-
     [HttpGet("accountHistory")]
     public IActionResult GetAccountHistory([FromQuery] string accountNumber)
     {
@@ -146,51 +145,19 @@ public class BankAccountController : ControllerBase
         }
     }
 
-    [HttpGet("accountInfo")]
-    public IActionResult GetAccountInfo([FromQuery] string accountNumber)
+    [HttpGet("GetAllAccounts")]
+    public IActionResult GetAllAccounts()
     {
         try
         {
-            var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
-            if (account == null)
-                return NotFound("Cuenta no encontrada.");
-
-            var accountInfo = new
+            if (accounts == null)
             {
-                account.Number,
-                account.Owner,
-                Balance = account.Balance
-            };
-
-            return Ok(accountInfo);
+                return Ok(Enumerable.Empty<BankAccount>());
+            }
+            return Ok(accounts);
         }
         catch (Exception ex)
         {
-
-            return StatusCode(500, $"Error interno del servidor: {ex.Message}");
-        }
-    }
-
-    [HttpGet("allAccountsInfo")]
-    public IActionResult GetAllAccountInfo()
-    {
-        try
-        {
-            if (!accounts.Any())
-                return NotFound("Cuenta no encontrada.");
-
-            var allInfo = accounts.Select(account => new
-            {
-                account.Number,
-                account.Owner,
-                Balance = account.Balance
-            });
-
-            return Ok(allInfo);
-        }
-        catch (Exception ex)
-        {
-
             return StatusCode(500, $"Error interno del servidor: {ex.Message}");
         }
     }
