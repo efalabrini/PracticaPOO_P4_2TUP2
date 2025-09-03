@@ -4,6 +4,7 @@ public class BankAccount
 {
     // Campo estático: se comparte entre todas las instancias de BankAccount
     private static int s_accountNumberSeed = 1234567890;
+    private static List<BankAccount> s_allBankAccounts = new List<BankAccount>();
     private List<Transaction> _allTransactions = new List<Transaction>();
 
     private readonly decimal _minimumBalance;
@@ -36,6 +37,8 @@ public class BankAccount
         _minimumBalance = minimumBalance;
         if (initialBalance > 0)
             MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
+
+        s_allBankAccounts.Add(this);
     }
 
 
@@ -92,4 +95,9 @@ public class BankAccount
     }
 
     public virtual void PerformMonthEndTransactions() { }
+
+    public static List<BankAccount> GetAllAccounts()
+    {
+        return s_allBankAccounts;
+    }
 }
