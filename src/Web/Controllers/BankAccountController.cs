@@ -18,7 +18,7 @@ public class BankAccountController : ControllerBase
                 return BadRequest("Owner name is required.");
 
             BankAccount newAccount;
-
+         
             switch (accountType)
             {
                 case AccountType.Credit:
@@ -176,9 +176,6 @@ public class BankAccountController : ControllerBase
     {
         try
         {
-            if (!accounts.Any())
-                return NotFound("Cuenta no encontrada.");
-
             var allInfo = accounts.Select(account => new
             {
                 account.Number,
