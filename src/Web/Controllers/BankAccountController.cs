@@ -118,21 +118,21 @@ public class BankAccountController : ControllerBase
         }
     }
     [HttpGet("{accountNumber}")]
-public IActionResult GetAccountByNumber(string accountNumber)
-{
-    var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
-    if (account == null)
-        return NotFound("Cuenta no encontrada.");
-
-    var accountInfo = new
+    public IActionResult GetAccountByNumber(string accountNumber)
     {
-        account.Number,
-        account.Owner,
-        Balance = account.Balance
-    };
+        var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
+        if (account == null)
+            return NotFound("Cuenta no encontrada.");
 
-    return Ok(accountInfo);
-}
+        var accountInfo = new
+        {
+            account.Number,
+            account.Owner,
+            Balance = account.Balance
+        };
+
+        return Ok(accountInfo);
+    }
 
 
     [HttpGet("balance")]
@@ -164,8 +164,14 @@ public IActionResult GetAccountByNumber(string accountNumber)
                 return NotFound("Cuenta no encontrada.");
 
             var history = account.GetAccountHistory();
-
-            return Ok(history);
+            var response = new
+            {
+                account.Number,
+                account.Owner,
+                Type = account.GetType().Name, // Aquí agregamos el tipo de cuenta
+                History = history
+            };
+            return Ok(response);
         }
         catch (Exception ex)
         {
