@@ -10,7 +10,7 @@ public class BankAccountController : ControllerBase
     private static List<BankAccount> accounts = new List<BankAccount>();
 
     [HttpPost("create")]
-    public ActionResult<string> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)  
+    public ActionResult<BankAccount> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)  
     {
         try
         {
@@ -40,7 +40,7 @@ public class BankAccountController : ControllerBase
 
             accounts.Add(newAccount);
 
-            return Ok($"Account {newAccount.Number} ({accountType}) was created for {newAccount.Owner} with {newAccount.Balance} initial balance.");
+            return CreatedAtAction( nameof(GetAccountInfo), new { id = newAccount.Number }, newAccount);
         }
         catch (Exception ex)
         {
