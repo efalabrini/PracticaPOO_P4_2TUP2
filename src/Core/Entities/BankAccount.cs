@@ -11,6 +11,7 @@ public class BankAccount
     // Campo de instancia: cada cuenta tiene su propio saldo
     public string Number { get; }
     public string Owner { get; set; }
+    public AccountType AccountType { get; set; }
     public decimal Balance
     {
         get
@@ -25,18 +26,19 @@ public class BankAccount
         }
     }
 
-    public BankAccount(string name, decimal initialBalance) : this(name, initialBalance, 0) { }
 
-    public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
+    public BankAccount(string name, decimal initialBalance, decimal minimumBalance, AccountType accountType)
     {
         Number = s_accountNumberSeed.ToString();
         s_accountNumberSeed++;
 
         Owner = name;
         _minimumBalance = minimumBalance;
-        if (initialBalance > 0)
+        
+       if (initialBalance > 0)
             MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
     }
+
 
 
     public void MakeDeposit(decimal amount, DateTime date, string note)
