@@ -18,7 +18,6 @@ public class BankAccountController : ControllerBase
                 return BadRequest("Owner name is required.");
 
             BankAccount newAccount;
-
             switch (accountType)
             {
                 case AccountType.Credit:

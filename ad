@@ -1,0 +1,84 @@
+[33mcommit bc6a5380997d6694131d1497bf1ff2500fa23fda[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Merge: b21af7e c15582e
+Author: Emiliano Falabrini <60440641+efalabrini@users.noreply.github.com>
+Date:   Wed Sep 3 15:10:11 2025 -0300
+
+    Merge pull request #57 from GGabi40/issue#52
+    
+    Fix Issue #52: Return empty list instead of NotFound when no accounts exist
+
+[33mcommit c15582e42657c3be1ceb7494b611675b7986c3f6[m
+Author: ggabi40 <gabibc2000@hotmail.com>
+Date:   Wed Sep 3 14:48:01 2025 -0300
+
+    Return empty list instead of NotFound when no accounts exist
+
+[33mcommit b21af7e041acc6e000bc4783b17c9933566f0ff7[m
+Author: efalabrini <edfsoft@gmail.com>
+Date:   Wed Sep 3 13:34:03 2025 -0300
+
+    Delete WeatherForecast endpoint
+
+[33mcommit d48d93e1b48a9b9e5efc6d862f107f90f6623489[m
+Merge: eee6f36 64121f7
+Author: Emiliano Falabrini <60440641+efalabrini@users.noreply.github.com>
+Date:   Thu Aug 28 17:12:53 2025 -0300
+
+    Merge pull request #50 from GGabi40/showAccountInfo
+    
+    Show account info
+
+[33mcommit 64121f773d528f40dbbd0da4bc2933677dda7c78[m
+Merge: 664e5a9 eee6f36
+Author: ggabi40 <gabibc2000@hotmail.com>
+Date:   Thu Aug 28 16:54:31 2025 -0300
+
+    Show all information
+
+[33mcommit 664e5a939418f2941336091de3394803cd5cf3ee[m
+Author: ggabi40 <gabibc2000@hotmail.com>
+Date:   Thu Aug 28 16:49:54 2025 -0300
+
+    Shows all information
+
+[33mcommit eee6f3672d538869ca7c6e89e6bd33273da5d765[m
+Merge: 6bd7aae f45a434
+Author: Emiliano Falabrini <60440641+efalabrini@users.noreply.github.com>
+Date:   Thu Aug 28 16:27:02 2025 -0300
+
+    Merge pull request #49 from melinab1998/oop-tutorial
+    
+    Add endpoint to create multiple types of bank accounts
+
+[33mcommit f45a43487a6ea853619e38af1d8a18385ad96e7b[m
+Author: Melina Bueno <melinabueno123@gmail.com>
+Date:   Thu Aug 28 10:20:43 2025 -0300
+
+    Add endpoint to create multiple types of bank accounts
+
+[33mcommit 6bd7aae11203c99a26b3cae70a222e25ee4eee0f[m
+Merge: 513a7c8 a4df0d2
+Author: Emiliano Falabrini <60440641+efalabrini@users.noreply.github.com>
+Date:   Wed Aug 27 14:15:22 2025 -0300
+
+    Merge pull request #40 from Justina-R/transactions-DepositsAndWithdrawals
+    
+    Creates Transaction entity & adds new endpoints in BankAccount Controller (MakeDeposit, MakeWithdrawal, GetBalance & GetAccountHistory)
+
+[33mcommit a4df0d2af6cdb05e77c189de2dd7035385b24073[m
+Author: Justina-R <justina.rey2602@gmail.com>
+Date:   Wed Aug 20 14:27:32 2025 -0300
+
+    Creates Transaction entity & adds new endpoints in BankAccount Controller (MakeDeposit, MakeWithdrawal, GetBalance & GetAccountHistory)
+
+[33mcommit 513a7c85c43c65bfdfdc6722c4ef31911e4ed4d7[m
+Author: efalabrini <edfsoft@gmail.com>
+Date:   Thu Aug 7 17:11:51 2025 -0300
+
+    first commit
+
+[33mcommit 67685525f274433c19b98287e921fa337e9a97a2[m
+Author: efalabrini <edfsoft@gmail.com>
+Date:   Thu Aug 7 16:49:51 2025 -0300
+
+    first commit
