@@ -41,7 +41,8 @@ public class BankAccountController : ControllerBase
 
             accounts.Add(newAccount);
 
-            return Ok($"Account {newAccount.Number} ({accountType}) was created for {newAccount.Owner} with {newAccount.Balance} initial balance.");
+            return CreatedAtAction(nameof(GetAccountInfo), new { accountNumber = newAccount.Number }, newAccount);
+
         }
         catch (Exception ex)
         {
