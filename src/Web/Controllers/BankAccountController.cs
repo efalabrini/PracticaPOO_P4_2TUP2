@@ -49,7 +49,7 @@ public class BankAccountController : ControllerBase
             newAccount.Number,
             newAccount.Owner,
             Balance = newAccount.Balance,
-            Type = accountType.ToString()
+            Type = newAccount.GetType().Name
         };
 
         return CreatedAtAction(
@@ -168,8 +168,9 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
-                Type = account.GetType().Name, // Aquí agregamos el tipo de cuenta
+                Type = account.GetType().Name, // Aquí agregamos el tipo de cuenta usando el nomvbre de la clase
                 History = history
+                
             };
             return Ok(response);
         }
