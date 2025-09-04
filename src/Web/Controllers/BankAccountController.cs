@@ -10,7 +10,7 @@ public class BankAccountController : ControllerBase
     private static List<BankAccount> accounts = new List<BankAccount>();
 
     [HttpPost("create")]
-    public ActionResult<string> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)  
+    public ActionResult<string> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)
     {
         try
         {
@@ -183,7 +183,14 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
-                Balance = account.Balance
+                account.Balance,
+                AccountType = account switch
+                {
+                    GiftCardAccount => "Cuenta Regalo",
+                    InterestEarningAccount => "Caja de Ahorro con Interés",
+                    LineOfCreditAccount => "Cuenta de Crédito",
+                    _ => "Cuenta Desconocida"
+                }
             });
 
             return Ok(allInfo);
