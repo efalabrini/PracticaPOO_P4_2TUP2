@@ -183,7 +183,9 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
-                Balance = account.Balance
+                Balance = account.Balance,
+                AccountType = account.GetType().Name 
+                
             });
 
             return Ok(allInfo);
