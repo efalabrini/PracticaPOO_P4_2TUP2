@@ -41,7 +41,7 @@ public class BankAccountController : ControllerBase
 
             accounts.Add(newAccount);
 
-            return CreatedAtAction( nameof(GetAccountInfo), new { id = newAccount.Number }, newAccount);
+        return CreatedAtAction(nameof(GetAccountInfo), new { accountNumber = newAccount.Number }, newAccount);
         }
         catch (Exception ex)
         {
