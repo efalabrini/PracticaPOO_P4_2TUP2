@@ -41,7 +41,7 @@ public class BankAccountController : ControllerBase
 
             accounts.Add(newAccount);
 
-        return CreatedAtAction(nameof(GetAccountInfo), new { accountNumber = newAccount.Number }, newAccount);
+            return CreatedAtAction( nameof(GetAccountInfo), new { id = newAccount.Number }, newAccount);
         }
         catch (Exception ex)
         {
@@ -183,7 +183,8 @@ public class BankAccountController : ControllerBase
             {
                 account.Number,
                 account.Owner,
-                Balance = account.Balance
+                Balance = account.Balance,
+                AccountType = account.GetType().Name
             });
 
             return Ok(allInfo);
