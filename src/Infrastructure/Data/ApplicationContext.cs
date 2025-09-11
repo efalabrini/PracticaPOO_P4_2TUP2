@@ -10,7 +10,12 @@ namespace Infrastructure.Data
         public DbSet<BankAccount> bankAccounts { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            
+
         }
+        // Definir DbSets para tus entidades
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+
+
     }    
 }
