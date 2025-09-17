@@ -118,21 +118,17 @@ public class BankAccountController : ControllerBase
     }
 
     [HttpGet("balance")]
-    public ActionResult<string> GetBalance([FromQuery] string accountNumber)
+    public async Task<ActionResult<string>> GetBalance([FromQuery] string accountNumber)
     {
-        try
-        {
-            var account = accounts.FirstOrDefault(a => a.Number == accountNumber);
+       
+           var account = await _context.BankAccounts.FirstOrDefaultAsync(a => a.Number == accountNumber);
 
             if (account == null)
                 return NotFound("Cuenta no encontrada.");
 
             return Ok($"The balance in account {account.Number} is ${account.Balance}.");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error interno del servidor: {ex.Message}");
-        }
+       
+        
     }
 
     [HttpGet("accountHistory")]
