@@ -13,31 +13,36 @@ public class BankAccountRepository : IBankAccountRepository
 
     public BankAccount Add(BankAccount entity)
     {
-        throw new NotImplementedException();
+        _applicationDbContext.bankAccounts.Add(entity);
+        _applicationDbContext.SaveChanges();
+        return entity;
     }
 
     public void Delete(BankAccount entity)
     {
-        throw new NotImplementedException();
+        _applicationDbContext.bankAccounts.Remove(entity);
+        _applicationDbContext.SaveChanges();
     }
 
     public BankAccount GetByAccountNumber(string accountNumber)
     {
-        throw new NotImplementedException();
+        return _applicationDbContext.bankAccounts.FirstOrDefault(a => a.Number == accountNumber);
     }
 
     public BankAccount GetById(int id)
     {
-        throw new NotImplementedException();
+        return _applicationDbContext.bankAccounts.FirstOrDefault(a => a.Id == id);
     }
 
     public List<BankAccount> List()
     {
-        throw new NotImplementedException();
+        return _applicationDbContext.bankAccounts.ToList();
     }
 
     public BankAccount Update(BankAccount entity)
     {
-        throw new NotImplementedException();
+        _applicationDbContext.bankAccounts.Update(entity);
+        _applicationDbContext.SaveChanges();
+        return entity;
     }
 }
