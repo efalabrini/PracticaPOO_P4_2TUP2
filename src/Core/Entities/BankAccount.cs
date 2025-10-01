@@ -1,3 +1,5 @@
+using Core.Exceptions;
+
 namespace Core.Entities;
 
 public class BankAccount
@@ -59,9 +61,12 @@ public class BankAccount
 
     public void MakeWithdrawal(decimal amount, DateTime date, string note)
     {
-        
+
         //TO-DO
-        //if (amount > _withDrawalLimit)
+        if (amount > _withDrawalLimit)
+        {
+            throw new AppValidationException("El monto ingresado suepra el límite de extracción.", "400");
+        }
 
 
         if (amount <= 0)
