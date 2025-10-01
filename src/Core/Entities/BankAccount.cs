@@ -67,12 +67,16 @@ public class BankAccount
             $"No es posible realizar una extracción de ${amount} ya que el balance de la cuenta es de ${Balance}.");
         }
 
+        if (Balance - amount < 0)
+        {
+            throw new AppValidationException("No hay saldo suficiente en la cuenta.");
+        }
+
         if (amount > _withDrawalLimit)
         {
             throw new AppValidationException(
             $"El monto {amount} excede el límite de extracción.");
         }
-
 
         if (amount <= 0)
         {
