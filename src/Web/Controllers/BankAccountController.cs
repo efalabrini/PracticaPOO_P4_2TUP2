@@ -107,8 +107,6 @@ public class BankAccountController : ControllerBase
     [HttpPost("withdrawal")]
     public ActionResult<string> MakeWithdrawal([FromQuery] decimal amount, [FromQuery] string note, [FromQuery] string accountNumber)
     {
-        try
-        {
             var account = _bankAccountRepository.GetByAccountNumber(accountNumber);
 
             if (account == null)
@@ -117,15 +115,6 @@ public class BankAccountController : ControllerBase
             account.MakeWithdrawal(amount, DateTime.Now, note);
 
             return Ok($"A withdrawal of ${amount} was made in account {account.Number}.");
-        }
-        catch (AppValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error interno del servidor: {ex.Message}");
-        }
     }
 
     [HttpGet("balance")]
