@@ -21,7 +21,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         }
         catch (AppValidationException ex)
         {
-            context.Response.StatusCode = 404;
+            context.Response.StatusCode = 400;
             await context.Response.WriteAsync($"¡Oops! Algo pasó: {ex.Message}");
         }
         catch (Exception ex)
