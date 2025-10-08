@@ -6,6 +6,7 @@ using Core.Interfaces;
 using System.Linq.Expressions;
 using Web.Models;
 using Core.Exceptions;
+using Web.Models.Requests;
 
 namespace Web.Controllers;
 
@@ -20,26 +21,26 @@ public class BankAccountController : ControllerBase
         _bankAccountRepository = bankAccountRepository;
     }
 
-    [HttpPost("create")]
-    public ActionResult<BankAccount> CreateBankAccount([FromQuery] string name, [FromQuery] decimal initialBalance, [FromQuery] AccountType accountType, [FromQuery] decimal? creditLimit = null, [FromQuery] decimal? monthlyDeposit = null)
+   [HttpPost("create")]
+    public ActionResult<BankAccount> CreateBankAccount([FromBody] CreateBankAccountRequest bankAccountDto)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(bankAccountDto.Name))
             throw new AppValidationException("Owner name is required.");
 
         BankAccount newAccount;
         
-        switch (accountType)
+        switch (bankAccountDto.AccountType)
         {
             case AccountType.Credit:
-                if (creditLimit == null)
+                if (bankAccountDto.CreditLimit == null)
                     return BadRequest("Credit limit is required for a Line of Credit account.");
-                newAccount = new LineOfCreditAccount(name, initialBalance, creditLimit.Value);
+                newAccount = new LineOfCreditAccount(bankAccountDto.Name, bankAccountDto.InitialBalance, bankAccountDto.CreditLimit.Value);
                 break;
             case AccountType.Gift:
-                newAccount = new GiftCardAccount(name, initialBalance, monthlyDeposit ?? 0);
+                newAccount = new GiftCardAccount(bankAccountDto.Name, bankAccountDto.InitialBalance, bankAccountDto.MonthlyDeposit ?? 0);
                 break;
             case AccountType.Interest:
-                newAccount = new InterestEarningAccount(name, initialBalance);
+                newAccount = new InterestEarningAccount(bankAccountDto.Name, bankAccountDto.InitialBalance);
                 break;
             default:
                 return BadRequest("Invalid account type.");
@@ -47,7 +48,7 @@ public class BankAccountController : ControllerBase
 
         _bankAccountRepository.Add(newAccount);
         return CreatedAtAction(nameof(GetAccountInfo), new { accountNumber = newAccount.Number }, newAccount);
-    }
+    } 
 
     [HttpPost("monthEnd")]
     public ActionResult<string> PerformMonthEndForAccount([FromQuery] string accountNumber)
