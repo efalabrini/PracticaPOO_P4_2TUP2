@@ -44,10 +44,20 @@ public class BankAccountService
         return newAccount;
     }
 
+    public BankAccount PerformMonthEndForAccount(string accountNumber)
+    {
+        var account = _bankAccountRepository.GetByAccountNumber(accountNumber)
+            ?? throw new AppValidationException("Cuenta no encontrada.");
+
+        account.PerformMonthEndTransactions();
+
+        return account;
+    }
+
     public decimal GetBalance(string accountNumber)
     {
         var account = _bankAccountRepository.GetByAccountNumber(accountNumber)
-        ?? throw new AppValidationException("Cuenta no encontrada.");
+            ?? throw new AppValidationException("Cuenta no encontrada.");
 
         return account.Balance;
     }
@@ -61,6 +71,27 @@ public class BankAccountService
         _bankAccountRepository.Update(account);
 
         return amount;
+    }
+
+    public decimal MakeWithdrawal(decimal amount, string note, string accountNumber)
+    {
+        var account = _bankAccountRepository.GetByAccountNumber(accountNumber)
+            ?? throw new AppValidationException("Cuenta no encontrada.");
+
+        account.MakeWithdrawal(amount, DateTime.Now, note);
+        _bankAccountRepository.Update(account);
+
+        return amount;
+    }
+
+    public string GetAccountHistory(string accountNumber)
+    {
+        var account = _bankAccountRepository.GetByAccountNumber(accountNumber)
+            ?? throw new AppValidationException("Cuenta no encontrada.");
+
+        var history = account.GetAccountHistory();
+
+        return history;
     }
 
     public BankAccount GetAccountInfo(string accountNumber)
