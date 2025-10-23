@@ -9,11 +9,11 @@ public record UserDto(Guid ExternalId, string UserName, string FirstName, string
     {
         return new UserDto(
             user.ExternalId ?? Guid.Empty,
+            user.UserName,
             user.FirstName,
             user.LastName,
             user.Email,
-            user.Phone,
-            user.UserName
+            user.Phone
            );
 
     }
