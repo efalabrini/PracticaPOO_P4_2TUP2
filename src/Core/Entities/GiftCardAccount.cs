@@ -4,8 +4,8 @@ namespace Core.Entities
     {
         private readonly decimal _monthlyDeposit = 0m;
 
-        public GiftCardAccount(string name, decimal initialBalance, decimal monthlyDeposit = 0) 
-            : base(name, initialBalance)
+        public GiftCardAccount(User owner, decimal initialBalance, decimal monthlyDeposit = 0) 
+            : base(owner, initialBalance)
         {
             _monthlyDeposit = monthlyDeposit;
         }
