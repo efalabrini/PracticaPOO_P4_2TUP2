@@ -25,7 +25,7 @@ public class BankAccountController : ControllerBase
     [HttpPost("create")]
     public ActionResult<BankAccountDto> CreateBankAccount([FromBody] CreateBankAccountRequest bankAccountDto)
     {
-        var newAccount = _bankAccountService.CreateBankAccount(bankAccountDto.Name
+        var newAccount = _bankAccountService.CreateBankAccount(bankAccountDto.OwnerId
          , bankAccountDto.InitialBalance
          , bankAccountDto.AccountType
          , bankAccountDto.CreditLimit

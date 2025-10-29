@@ -1,13 +1,12 @@
-
 using Core.Entities;
 
 namespace Web.Models;
 
-public record BankAccountDto(int Id, string Number, string Owner,decimal Balance, string Type)
+public record BankAccountDto(int Id, string Number, int OwnerId, decimal Balance, string Type)
 {
     public static BankAccountDto Create(BankAccount entity)
     {
-        var dto = new BankAccountDto(entity.Id, entity.Number, entity.Owner, entity.Balance, entity.GetType().Name);
+        var dto = new BankAccountDto(entity.Id, entity.Number, entity.OwnerId, entity.Balance, entity.GetType().Name);
 
         return dto;
     }

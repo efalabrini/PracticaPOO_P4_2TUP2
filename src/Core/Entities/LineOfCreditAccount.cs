@@ -2,8 +2,8 @@ namespace Core.Entities
 {
     public class LineOfCreditAccount : BankAccount
     {
-        public LineOfCreditAccount(string name, decimal initialBalance, decimal creditLimit)
-            : base(name, initialBalance, -creditLimit)  
+        public LineOfCreditAccount(User owner, decimal initialBalance, decimal creditLimit)
+            : base(owner, initialBalance, -creditLimit)  
         {
         }
 

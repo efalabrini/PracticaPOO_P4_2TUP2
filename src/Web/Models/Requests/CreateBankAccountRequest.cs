@@ -5,7 +5,7 @@ namespace Web.Models.Requests;
 
 public record CreateBankAccountRequest(
     [Required]
-    string Name,
+    int OwnerId,
 
     [Required]
     decimal InitialBalance,

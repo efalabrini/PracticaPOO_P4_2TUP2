@@ -2,8 +2,8 @@ namespace Core.Entities
 {
     public class InterestEarningAccount : BankAccount
     {
-        public InterestEarningAccount(string name, decimal initialBalance)
-            : base(name, initialBalance)
+        public InterestEarningAccount(User owner, decimal initialBalance)
+            : base(owner, initialBalance)
         {
         }
 

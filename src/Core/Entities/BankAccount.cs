@@ -15,7 +15,8 @@ public class BankAccount
 
     // Campo de instancia: cada cuenta tiene su propio saldo
     public string Number { get; set; }
-    public string Owner { get; set; }
+    public User Owner { get; set; }
+    public int OwnerId { get; set; }
 
     protected BankAccount() // protected: visibilidad a las clases hijas
     {
@@ -36,13 +37,13 @@ public class BankAccount
         }
     }
 
-    public BankAccount(string name, decimal initialBalance) : this(name, initialBalance, 0) { }
+    public BankAccount(User owner, decimal initialBalance) : this(owner, initialBalance, 0) { }
 
-    public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
+    public BankAccount(User owner, decimal initialBalance, decimal minimumBalance)
     {
         Number = Guid.NewGuid().ToString();
 
-        Owner = name;
+        Owner = owner;
         _minimumBalance = minimumBalance;
         if (initialBalance > 0)
             MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
