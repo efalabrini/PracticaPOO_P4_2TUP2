@@ -3,11 +3,12 @@ using Core.Entities;
 
 namespace Core.Dtos;
 
-public record UserDto(Guid ExternalId, string UserName, string FirstName, string LastName, string Email, string Phone)
+public record UserDto(int Id,Guid ExternalId, string UserName, string FirstName, string LastName, string Email, string Phone)
 {
     public static UserDto Create(User user)
     {
         return new UserDto(
+            user.Id,
             user.ExternalId ?? Guid.Empty,
             user.UserName,
             user.FirstName,
