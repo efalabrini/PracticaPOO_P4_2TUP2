@@ -35,14 +35,15 @@ namespace Infrastructure.Data
 
             result = [
             new User
-            {
+             {
                 UserName = "admin",
-                Email = "admin@hotmail.com",
-                FirstName = "Admin",
-                LastName = "1",
-                Phone = "123456789",
-                Id = 1
-            }];
+                 Email = "admin@hotmail.com",
+                 FirstName = "Admin",
+                 LastName = "1",
+                 Phone = "123456789",
+                 Password="1234",
+                 Id = 1
+    }];
 
             return result;
         }
