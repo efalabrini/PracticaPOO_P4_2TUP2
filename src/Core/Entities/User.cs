@@ -37,4 +37,8 @@ public class User
 
     [MaxLength(25)]
     public string Phone { get; set; } = string.Empty;
+
+    [Column(TypeName = "nvarchar(100)")]
+    public string Password { get; set; }
+
 }

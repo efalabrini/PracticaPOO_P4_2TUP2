@@ -2,6 +2,8 @@ using Core.Infrastructure.Data;
 using Core.Interfaces;
 using Core.Services;
 using Infrastructure.Data;
+using Infrastructure.Services;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
+builder.Services.AddScoped<ICustomAuthenticationService, CustomAuthenticationService>();
+builder.Services.Configure<CustomAuthenticationService.AutenticacionServiceOptions>(
+    builder.Configuration.GetSection(CustomAuthenticationService.AutenticacionServiceOptions.SectionName)
+);
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddScoped<BankAccountService>();
 builder.Services.AddScoped<UserServices>();
