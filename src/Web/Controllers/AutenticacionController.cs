@@ -8,12 +8,10 @@ namespace Web.Controllers;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IConfiguration _config;
     private readonly ICustomAuthenticationService _customAuthenticationService;
 
-    public AuthenticationController(IConfiguration config, ICustomAuthenticationService autenticacionService)
+    public AuthenticationController(ICustomAuthenticationService autenticacionService)
     {
-        _config = config; //Hacemos la inyección para poder usar el appsettings.json
         _customAuthenticationService = autenticacionService;
     }
 

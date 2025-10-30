@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Text;
 using Core.Infrastructure.Data;
 using Core.Interfaces;
 using Core.Services;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Web.Middleware;
 
@@ -41,8 +44,8 @@ using (var command = connection.CreateCommand())
 
 builder.Services.AddDbContext<ApplicationDbContext>(DbContextOptions => DbContextOptions.UseSqlite(connection));
 
-
-#region Swagger config
+/*
+#region Swagger config for Entra
 //builder.Services.AddSwaggerGen();
 string instance = builder.Configuration["AzureAd:Instance"]!;
 string tenantId = builder.Configuration["AzureAd:TenantId"]!;
@@ -90,11 +93,57 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+*/
+
+
+# region Swagger custom token config
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("ConsultaAlumnosApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Acá pegar el token generado al loguearse."
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "ConsultaAlumnosApiBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
+                }, new List<string>() }
+    });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    setupAction.IncludeXmlComments(xmlPath);
+
+});
+
+builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
+    .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["AutenticacionService:Issuer"],
+            ValidAudience = builder.Configuration["AutenticacionService:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["AutenticacionService:SecretForKey"]))
+        };
+    }
+);
+# endregion
 
 var app = builder.Build();
 
-
-#region Swagger pipeline config
+/*
+#region Swagger pipeline config for Entra
 string spaClientId = builder.Configuration["AzureAd:SpaClientId"]!;
 app.UseSwagger();
 var oAuthRedirectUrl = builder.Configuration["AzureAd:RedirectUri"];
@@ -107,6 +156,12 @@ app.UseSwaggerUI(c =>
     c.OAuthScopes($"{ApplicationIdURI}/{scope}"); //Selects this scope by default.
 });
 #endregion
+*/
+
+# region Swagger pipeline config for custom token
+app.UseSwagger();
+app.UseSwaggerUI();
+# endregion
 
 app.UseHttpsRedirection();
 
