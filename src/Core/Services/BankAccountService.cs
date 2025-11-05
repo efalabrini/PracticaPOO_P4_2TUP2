@@ -73,9 +73,12 @@ public class BankAccountService
                 var jsonResponse = await response.Content.ReadAsStringAsync();
 
                 JsonNode data = JsonNode.Parse(jsonResponse)!;
-                JsonNode field = data.GetValue("venta");
+                JsonNode? field = data["venta"];
 
-                var cotiz = decimal.Parse(field.AsValue().ToString)());
+                if (field == null)
+                    throw new Exception("Node not found");
+
+                var cotiz = decimal.Parse(field.AsValue().ToString());
 
                 var balanceUSD = balance / cotiz;
                 balanceUSD = Decimal.Round(balanceUSD,2);
