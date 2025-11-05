@@ -44,7 +44,7 @@ using (var command = connection.CreateCommand())
 
 builder.Services.AddDbContext<ApplicationDbContext>(DbContextOptions => DbContextOptions.UseSqlite(connection));
 
-/*
+
 #region Swagger config for Entra
 //builder.Services.AddSwaggerGen();
 string instance = builder.Configuration["AzureAd:Instance"]!;
@@ -89,14 +89,14 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-#endregion
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-*/
+#endregion
 
 
-# region Swagger custom token config
+
+/*# region Swagger custom token config
 builder.Services.AddSwaggerGen(setupAction =>
 {
     setupAction.AddSecurityDefinition("ConsultaAlumnosApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
@@ -139,10 +139,11 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
     }
 );
 # endregion
+*/
 
 var app = builder.Build();
 
-/*
+
 #region Swagger pipeline config for Entra
 string spaClientId = builder.Configuration["AzureAd:SpaClientId"]!;
 app.UseSwagger();
@@ -156,12 +157,13 @@ app.UseSwaggerUI(c =>
     c.OAuthScopes($"{ApplicationIdURI}/{scope}"); //Selects this scope by default.
 });
 #endregion
-*/
 
+/*
 # region Swagger pipeline config for custom token
 app.UseSwagger();
 app.UseSwaggerUI();
 # endregion
+*/
 
 app.UseHttpsRedirection();
 
