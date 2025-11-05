@@ -2,6 +2,7 @@ using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Dtos;
+using System.Text.Json.Nodes;
 namespace Core.Services;
 
 public class BankAccountService
@@ -51,12 +52,41 @@ public class BankAccountService
         return newAccount;
     }
 
-    public decimal GetBalance(string accountNumber)
+    public async Task<decimal> GetBalance(string accountNumber, string currency)
     {
         var account = _bankAccountRepository.GetByAccountNumber(accountNumber)
         ?? throw new AppValidationException("Cuenta no encontrada.");
 
-        return account.Balance;
+        var balance = account.Balance;
+
+        switch (currency)
+        {
+            case "ARS":
+                return balance;
+
+            case "USD":
+                HttpClient httpClient = new();
+                HttpResponseMessage response = await httpClient.GetAsync("https://dolarapi.com/v1/dolares/oficial");
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                JsonNode data = JsonNode.Parse(jsonResponse)!;
+                JsonNode field = data.GetValue("venta");
+
+                var cotiz = decimal.Parse(field.AsValue().ToString)());
+
+                var balanceUSD = balance / cotiz;
+                balanceUSD = Decimal.Round(balanceUSD,2);
+                return balanceUSD;
+
+            default:
+                throw new AppValidationException($"Currency not allowed: {currency}");
+
+        }
+
+        
     }
 
     public decimal MakeDeposit(decimal amount, string note, string accountNumber)

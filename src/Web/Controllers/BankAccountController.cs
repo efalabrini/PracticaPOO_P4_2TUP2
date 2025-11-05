@@ -4,6 +4,8 @@ using Web.Models.Requests;
 using Core.Services;
 using Core.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Web.Controllers;
 
@@ -53,23 +55,24 @@ public class BankAccountController : ControllerBase
                );
         return NoContent();
     }
-    
+
     [HttpPost("withdrawal")]
-    
-     public IActionResult MakeWithdrawal([FromBody] MakeWithdrawalRequest withdrawalDto)
+
+    public IActionResult MakeWithdrawal([FromBody] MakeWithdrawalRequest withdrawalDto)
     {
-            _bankAccountService.MakeWithdrawal(
-                        withdrawalDto.Amount,
-                        withdrawalDto.Notes,
-                        withdrawalDto.Number
-                    );
-            return NoContent();
+        _bankAccountService.MakeWithdrawal(
+                    withdrawalDto.Amount,
+                    withdrawalDto.Notes,
+                    withdrawalDto.Number
+                );
+        return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpGet("balance")]
-    public ActionResult<decimal> GetBalance([FromQuery] string accountNumber)
+    public async Task<ActionResult<decimal>> GetBalance([FromQuery] string accountNumber, [FromQuery] string currency = "ARS")
     {
-        var balance = _bankAccountService.GetBalance(accountNumber);
+        var balance = await _bankAccountService.GetBalance(accountNumber,currency);
         return balance;
 
     }
