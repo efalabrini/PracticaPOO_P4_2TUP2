@@ -143,6 +143,13 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
 
 var app = builder.Build();
 
+#region Apply EF migrations
+using (var serviceScopescope = app.Services.CreateScope())
+{
+    var dbContext = serviceScopescope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
+#endregion
 
 #region Swagger pipeline config for Entra
 string spaClientId = builder.Configuration["AzureAd:SpaClientId"]!;
